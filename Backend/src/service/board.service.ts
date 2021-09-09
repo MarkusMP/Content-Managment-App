@@ -1,4 +1,9 @@
-import { DocumentDefinition, FilterQuery, QueryOptions } from "mongoose";
+import {
+  DocumentDefinition,
+  FilterQuery,
+  QueryOptions,
+  UpdateQuery,
+} from "mongoose";
 import Board, { BoardDocument } from "../model/board.model";
 
 export const createBoard = async (input: DocumentDefinition<BoardDocument>) => {
@@ -17,9 +22,17 @@ export const getBoard = async (
 };
 
 export const getOneBoard = async (query: FilterQuery<BoardDocument>) => {
-  return Board.findOne(query);
+  return Board.findOne(query).populate("lists", "title");
 };
 
 export const deleteBoardByUser = async (query: FilterQuery<BoardDocument>) => {
   return Board.deleteOne(query);
+};
+
+export const findAndUpdateBoard = async (
+  query: FilterQuery<BoardDocument>,
+  update: UpdateQuery<BoardDocument>,
+  options: QueryOptions
+) => {
+  return Board.findOneAndUpdate(query, update, options);
 };

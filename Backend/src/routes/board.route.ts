@@ -2,12 +2,17 @@ import express from "express";
 const router = express.Router();
 import validateRequest from "../middleware/validateRequest";
 import requiresUser from "../middleware/requiresUser";
-import { createBoardSchema } from "../schema/board.schema";
+import {
+  createBoardSchema,
+  updateBoardSchema,
+  deleteBoardSchema,
+} from "../schema/board.schema";
 import {
   boardCreateHandler,
   getBoardByUser,
   deleteBoard,
   findOneBoardById,
+  updateBoard,
 } from "../controller/board.controller";
 
 router
@@ -17,7 +22,8 @@ router
 
 router
   .route("/:boardId")
-  .delete(requiresUser, deleteBoard)
-  .get(requiresUser, findOneBoardById);
+  .delete([requiresUser, validateRequest(deleteBoardSchema)], deleteBoard)
+  .get(requiresUser, findOneBoardById)
+  .put([requiresUser, validateRequest(updateBoardSchema)], updateBoard);
 
 export default router;

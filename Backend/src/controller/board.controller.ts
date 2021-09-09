@@ -6,6 +6,7 @@ import {
   getBoard,
   getOneBoard,
   deleteBoardByUser,
+  findAndUpdateBoard,
 } from "../service/board.service";
 import { get } from "lodash";
 
@@ -27,7 +28,7 @@ const getBoardByUser = async (req: Request, res: Response) => {
   const boards = await getBoard({ user: userId });
 
   if (!boards) {
-    return res.sendStatus(404);
+    return res.status(404);
   }
 
   return res.json(boards);
@@ -40,16 +41,16 @@ const deleteBoard = async (req: Request, res: Response) => {
   const board = await getOneBoard({ boardId });
 
   if (!board) {
-    return res.sendStatus(404);
+    return res.status(404);
   }
 
   if (String(board.user) !== String(userId)) {
-    return res.sendStatus(401);
+    return res.status(401);
   }
 
   await deleteBoardByUser({ boardId });
 
-  return res.sendStatus(200);
+  return res.status(200);
 };
 
 const findOneBoardById = async (req: Request, res: Response) => {
@@ -59,14 +60,41 @@ const findOneBoardById = async (req: Request, res: Response) => {
   const board = await getOneBoard({ boardId });
 
   if (!board) {
-    return res.sendStatus(404);
+    return res.status(404);
   }
 
   if (String(board.user) !== String(userId)) {
-    return res.sendStatus(401);
+    return res.status(401);
   }
 
   res.json(board);
 };
 
-export { boardCreateHandler, getBoardByUser, deleteBoard, findOneBoardById };
+const updateBoard = async (req: Request, res: Response) => {
+  const userId = get(req, "user._id");
+  const boardId = get(req, "params.boardId");
+  const update = req.body;
+
+  const board = await getOneBoard({ boardId });
+
+  if (!board) {
+    return res.status(404);
+  }
+
+  if (String(board.user) !== String(userId)) {
+    return res.status(401);
+  }
+  const updateBoard = await findAndUpdateBoard({ boardId }, update, {
+    new: true,
+  });
+
+  return res.send(updateBoard);
+};
+
+export {
+  boardCreateHandler,
+  getBoardByUser,
+  deleteBoard,
+  findOneBoardById,
+  updateBoard,
+};

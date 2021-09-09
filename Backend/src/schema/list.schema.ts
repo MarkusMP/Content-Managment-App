@@ -8,19 +8,11 @@ export const payload = {
 
 const params = {
   params: object({
-    boardId: string().required("boardId is required"),
+    boardId: string().required("BoardId is required"),
   }),
 };
 
-export const createBoardSchema = object({
+export const createListSchema = object({
   ...payload,
-});
-
-export const updateBoardSchema = object({
-  ...payload,
-  ...params,
-});
-
-export const deleteBoardSchema = object({
   ...params,
 });
