@@ -6,6 +6,7 @@ import UserRoutes from "./routes/user.route";
 import SessionRoutes from "./routes/session.route";
 import BoardRoutes from "./routes/board.route";
 import ListRoutes from "./routes/list.route";
+import CardRoutes from "./routes/card.route";
 import deserializeUser from "./middleware/DeserializeUser";
 
 dotenv.config();
@@ -20,6 +21,7 @@ app.use("/api/user", UserRoutes);
 app.use("/api/sessions", SessionRoutes);
 app.use("/api/board", BoardRoutes);
 app.use("/api/list", ListRoutes);
+app.use("/api/card", CardRoutes);
 
 app.listen(process.env.PORT, () => {
   log.info(

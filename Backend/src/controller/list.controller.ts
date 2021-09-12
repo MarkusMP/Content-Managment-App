@@ -6,7 +6,9 @@ import {
   removelistFromBoard,
   removeList,
   updateList,
+  findAllListByBoard,
 } from "../service/list.service";
+import Board from "../model/board.model";
 
 export const createListHandler = async (req: Request, res: Response) => {
   const boardId = get(req, "params.boardId");
@@ -46,4 +48,39 @@ export const editListHandler = async (req: Request, res: Response) => {
   });
 
   return res.send(updatedList);
+};
+
+export const moveListHandler = async (req: Request, res: Response) => {
+  const listId = get(req, "params.listId");
+  const toIndex = req.body.toIndex ? req.body.toIndex : 0;
+  const { boardId } = req.body;
+
+  console.log(boardId);
+
+  const board = await Board.findById(boardId);
+
+  if (!listId) {
+    throw {
+      status: 404,
+      errors: [{ msg: "List not found" }],
+    };
+  }
+
+  if (board) {
+    board.lists.splice(board.lists.indexOf(listId), 1);
+    board.lists.splice(toIndex, 0, listId);
+    await board.save();
+
+    return res.json(board.lists);
+  }
+
+  return res.json({ msg: "Board is not found" });
+};
+
+export const getAllListByBoardId = async (req: Request, res: Response) => {
+  const boardId = get("req", "params.boardId");
+
+  const lists = await findAllListByBoard({ boardId });
+
+  return res.json(lists);
 };

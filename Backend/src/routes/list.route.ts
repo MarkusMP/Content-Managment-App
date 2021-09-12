@@ -5,6 +5,8 @@ import {
   createListHandler,
   removeListHandler,
   editListHandler,
+  moveListHandler,
+  getAllListByBoardId,
 } from "../controller/list.controller";
 import { createListSchema } from "../schema/list.schema";
 
@@ -13,8 +15,12 @@ const router = express.Router();
 router
   .route("/:boardId")
   .post([requiresUser, validateRequest(createListSchema)], createListHandler)
-  .delete(requiresUser, removeListHandler);
+  .delete(requiresUser, removeListHandler)
+  .get(requiresUser, getAllListByBoardId);
 
-router.route("/:listId").put(requiresUser, editListHandler);
+router
+  .route("/list/:listId")
+  .put(requiresUser, editListHandler)
+  .post(requiresUser, moveListHandler);
 
 export default router;

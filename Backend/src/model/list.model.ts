@@ -1,18 +1,14 @@
 import mongoose, { Schema, PopulatedDoc } from "mongoose";
+import { CardDocument } from "./card.model";
 
 export interface ListDocument extends mongoose.Document {
   title: string;
-  cards: Array<cardArr>;
+  cards: Array<CardDocument>;
   board: Schema.Types.ObjectId;
 }
 
-interface cardArr extends mongoose.Document {
-  type: Schema.Types.ObjectId;
-  ref: "Card";
-}
-
 const listSchema = new mongoose.Schema({
-  title: { type: String, rquired: true },
+  title: { type: String, required: true },
   cards: [{ type: Schema.Types.ObjectId, ref: "Card" }],
   board: { type: Schema.Types.ObjectId, ref: "Board" },
 });

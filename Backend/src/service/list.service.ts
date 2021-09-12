@@ -47,3 +47,7 @@ export const updateList = async (
 ) => {
   return List.findOneAndUpdate(query, update, options);
 };
+
+export const findAllListByBoard = async (query: FilterQuery<ListDocument>) => {
+  return List.find(query).populate("cards", "title");
+};
