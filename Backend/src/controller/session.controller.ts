@@ -32,7 +32,7 @@ export async function createUserSessionHandler(req: Request, res: Response) {
   });
 
   // send refresh & access token back
-  return res.send({ accessToken, refreshToken });
+  return res.send({ accessToken, refreshToken, user });
 }
 
 export async function invalidateUserSessionHandler(

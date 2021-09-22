@@ -1,9 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { RootState } from "../app/store";
+import { useSelector, useDispatch } from "react-redux";
+import { signout } from "../features/users/usersSlice";
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const userInfo = useSelector((state: RootState) => state.userInfo);
   return (
-    <nav className="nav flex flex-wrap items-center justify-between px-4">
+    <nav className="nav flex flex-wrap items-center justify-between px-4 absolute w-full bg-white">
       <div className="flex flex-no-shrink items-center mr-6 py-3 text-grey-darkest">
         <span className="font-semibold text-xl tracking-tight">
           Content Management App
@@ -22,7 +27,7 @@ const Header = () => {
         <li className="border-t md:border-none">
           <Link
             to="/"
-            className="block md:inline-block px-4 py-3 no-underline text-grey-darkest hover:text-grey-darker font-bold"
+            className="block md:inline-block px-4 py-3 no-underline text-grey-darkest hover:text-grey-darker"
           >
             Home
           </Link>
@@ -36,6 +41,25 @@ const Header = () => {
             Dashboard
           </Link>
         </li>
+        {!userInfo.accessToken ? (
+          <li className="border-t md:border-none">
+            <Link
+              to="/login"
+              className=" block md:inline-block bg-blue-500 hover:bg-blue-700 text-white  py-3 px-3 rounded focus:outline-none focus:shadow-outline"
+            >
+              Login
+            </Link>
+          </li>
+        ) : (
+          <li className="border-t md:border-none">
+            <button
+              onClick={() => dispatch(signout({}))}
+              className=" block md:inline-block bg-blue-500 hover:bg-blue-700 text-white  py-3 px-3 rounded focus:outline-none focus:shadow-outline"
+            >
+              Signout
+            </button>
+          </li>
+        )}
       </ul>
     </nav>
   );
