@@ -57,6 +57,8 @@ const findOneBoardById = async (req: Request, res: Response) => {
   const userId = get(req, "user._id");
   const boardId = get(req, "params.boardId");
 
+  console.log(boardId);
+
   const board = await getOneBoard({ boardId });
 
   if (!board) {

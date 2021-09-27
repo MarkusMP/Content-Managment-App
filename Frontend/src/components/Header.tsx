@@ -8,7 +8,10 @@ const Header = () => {
   const dispatch = useDispatch();
   const userInfo = useSelector((state: RootState) => state.userInfo);
   return (
-    <nav className="nav flex flex-wrap items-center justify-between px-4 absolute w-full bg-white">
+    <nav
+      className="nav flex flex-wrap items-center justify-between px-4 absolute w-full bg-white"
+      style={{ zIndex: 999 }}
+    >
       <div className="flex flex-no-shrink items-center mr-6 py-3 text-grey-darkest">
         <span className="font-semibold text-xl tracking-tight">
           Content Management App
@@ -32,15 +35,6 @@ const Header = () => {
             Home
           </Link>
         </li>
-
-        <li className="border-t md:border-none">
-          <Link
-            to="/dashboard"
-            className="block md:inline-block px-4 py-3 no-underline text-grey-darkest hover:text-grey-darker"
-          >
-            Dashboard
-          </Link>
-        </li>
         {!userInfo.accessToken ? (
           <li className="border-t md:border-none">
             <Link
@@ -51,14 +45,24 @@ const Header = () => {
             </Link>
           </li>
         ) : (
-          <li className="border-t md:border-none">
-            <button
-              onClick={() => dispatch(signout({}))}
-              className=" block md:inline-block bg-blue-500 hover:bg-blue-700 text-white  py-3 px-3 rounded focus:outline-none focus:shadow-outline"
-            >
-              Signout
-            </button>
-          </li>
+          <>
+            <li className="border-t md:border-none">
+              <Link
+                to="/dashboard"
+                className="block md:inline-block px-4 py-3 no-underline text-grey-darkest hover:text-grey-darker"
+              >
+                Dashboard
+              </Link>
+            </li>
+            <li className="border-t md:border-none">
+              <button
+                onClick={() => dispatch(signout({}))}
+                className=" block md:inline-block bg-blue-500 hover:bg-blue-700 text-white  py-3 px-3 rounded focus:outline-none focus:shadow-outline"
+              >
+                Signout
+              </button>
+            </li>
+          </>
         )}
       </ul>
     </nav>

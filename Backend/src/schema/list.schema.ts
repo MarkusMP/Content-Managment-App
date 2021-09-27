@@ -16,3 +16,7 @@ export const createListSchema = object({
   ...payload,
   ...params,
 });
+
+export const getAllListsByBoardIdSchema = object({
+  ...params,
+});

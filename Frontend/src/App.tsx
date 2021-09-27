@@ -5,6 +5,7 @@ import HomePage from "./pages/HomePage";
 import DashboardPage from "./features/boards/BoardDashboard";
 import Login from "./features/users/Login";
 import Register from "./features/users/Register";
+import Board from "./features/board/Board";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/dashboard" component={DashboardPage} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
+        <Route path="/board/:boardId" component={Board} />
       </Switch>
     </Router>
   );

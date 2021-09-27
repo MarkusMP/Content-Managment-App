@@ -54,7 +54,7 @@ export const moveListHandler = async (req: Request, res: Response) => {
   const listId = get(req, "params.listId");
   const toIndex = req.body.toIndex ? req.body.toIndex : 0;
   const { boardId } = req.body;
-
+  console.log(listId);
   console.log(boardId);
 
   const board = await Board.findById(boardId);
@@ -71,16 +71,14 @@ export const moveListHandler = async (req: Request, res: Response) => {
     board.lists.splice(toIndex, 0, listId);
     await board.save();
 
-    return res.json(board.lists);
+    return res.json(board);
   }
 
   return res.json({ msg: "Board is not found" });
 };
 
 export const getAllListByBoardId = async (req: Request, res: Response) => {
-  const boardId = get("req", "params.boardId");
-
-  const lists = await findAllListByBoard({ boardId });
+  const lists = await findAllListByBoard({ boardId: req.params.boardId });
 
   return res.json(lists);
 };

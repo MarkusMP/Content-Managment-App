@@ -3,12 +3,16 @@ import Modal from "../../components/Modal";
 import { getAllBoardsByUser, createBoard } from "./boardsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
+import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const DashboardPage = () => {
   const [open, setOpen] = useState(false);
   const userInfo = useSelector((state: RootState) => state.userInfo);
   const boards = useSelector((state: RootState) => state.boards.boards);
   const dispatch = useDispatch();
+  const history = useHistory();
+
   useEffect(() => {
     if (userInfo.accessToken && userInfo.refreshToken) {
       dispatch(
@@ -17,8 +21,10 @@ const DashboardPage = () => {
           refreshToken: userInfo.refreshToken,
         })
       );
+    } else {
+      history.push("/login");
     }
-  }, [userInfo, dispatch]);
+  }, [userInfo, dispatch, history]);
 
   const createBoardHandler = (title: string) => {
     dispatch(
@@ -43,16 +49,22 @@ const DashboardPage = () => {
         <div className="flex flex-col">
           {boards &&
             boards.map((board) => (
-              <div
-                key={board._id}
-                className="m-2 p-6 cursor-pointer block w-max border-2 rounded border-black"
-              >
-                <h1>{board.title}</h1>
-              </div>
+              <Link key={board._id} to={`/board/${board._id}`}>
+                <div className="m-2 p-6 cursor-pointer block w-max border-2 rounded border-black">
+                  <h1>{board.title}</h1>
+                </div>
+              </Link>
             ))}
         </div>
       </div>
-      <Modal open={open} setOpen={setOpen} createBoard={createBoardHandler} />
+      <Modal
+        open={open}
+        setOpen={setOpen}
+        create={createBoardHandler}
+        inputPlaceholder="Enter Board title"
+        title="Create Board"
+        btnText="Create"
+      />
     </>
   );
 };

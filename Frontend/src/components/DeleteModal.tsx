@@ -1,16 +1,13 @@
 import { Fragment, useRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 
-const Modal = (props: modalOpen) => {
+const DeleteModal = (props: modalOpen) => {
   const cancelButtonRef = useRef(null);
-  const titleRef = useRef<HTMLInputElement | null>(null);
 
-  const createHandler = () => {
-    if (titleRef.current) {
-      props.create(titleRef.current.value);
+  const deleteHandler = () => {
+    props.delete(props.id);
 
-      props.setOpen(false);
-    }
+    props.setOpen(false);
   };
   return (
     <Transition.Root show={props.open} as={Fragment}>
@@ -59,16 +56,6 @@ const Modal = (props: modalOpen) => {
                     >
                       {props.title}
                     </Dialog.Title>
-                    <div className="mt-2">
-                      <input
-                        type="text"
-                        name="Title"
-                        placeholder={props.inputPlaceholder}
-                        className="shadow appearance-nonerounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline "
-                        required
-                        ref={titleRef}
-                      />
-                    </div>
                   </div>
                 </div>
               </div>
@@ -76,9 +63,9 @@ const Modal = (props: modalOpen) => {
                 <button
                   type="button"
                   className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
-                  onClick={createHandler}
+                  onClick={deleteHandler}
                 >
-                  {props.btnText}
+                  Delete
                 </button>
                 <button
                   type="button"
@@ -100,10 +87,9 @@ const Modal = (props: modalOpen) => {
 interface modalOpen {
   open: false | true;
   setOpen: any;
-  create: any;
-  btnText: string;
+  delete: any;
+  id: string;
   title: string;
-  inputPlaceholder: string;
 }
 
-export default Modal;
+export default DeleteModal;
