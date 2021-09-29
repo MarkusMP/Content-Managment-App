@@ -2,12 +2,14 @@ import { Fragment, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import DeleteModal from "../components/DeleteModal";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteList, updateList } from "../features/board/boardSlice";
+import { deleteBoard, updateBoard } from "../features/board/boardSlice";
 import { RootState } from "../app/store";
-import Modal from "../components/Modal";
+import UpdateBoardModal from "../components/UpdateBoardModal";
+import { useHistory } from "react-router-dom";
+import { deleteTheBoard } from "../features/boards/boardsSlice";
 
 interface props {
-  id: string;
+  boardId: string;
 }
 
 export default function Example(props: props) {
@@ -15,23 +17,28 @@ export default function Example(props: props) {
   const [openEdit, setOpenEdit] = useState(false);
   const userInfo = useSelector((state: RootState) => state.userInfo);
   const dispatch = useDispatch();
+  const history = useHistory();
 
-  const deleteListHandler = () => {
+  const deleteBoardHandler = () => {
     dispatch(
-      deleteList({
-        listId: props.id,
+      deleteBoard({
         refreshToken: userInfo.refreshToken,
         accessToken: userInfo.accessToken,
+        boardId: props.boardId,
       })
     );
+    dispatch(deleteTheBoard({ boardId: props.boardId }));
+    history.push("/dashboard");
   };
 
-  const updateListHandler = (title: string) => {
+  const updateBoardHandler = (title: string, backgroundURl: string) => {
+    console.log(title);
     dispatch(
-      updateList({
-        listId: props.id,
+      updateBoard({
         refreshToken: userInfo.refreshToken,
         accessToken: userInfo.accessToken,
+        boardId: props.boardId,
+        backgroundURL: backgroundURl,
         title: title,
       })
     );
@@ -39,26 +46,26 @@ export default function Example(props: props) {
 
   return (
     <>
-      <Modal
+      <UpdateBoardModal
         open={openEdit}
         setOpen={setOpenEdit}
-        create={updateListHandler}
-        inputPlaceholder="Enter List Title"
-        title="Edit list title"
+        create={updateBoardHandler}
+        inputPlaceholder="Enter Board Title"
+        title="Edit Board title"
         btnText="Update"
       />
       <DeleteModal
         id="id"
-        delete={deleteListHandler}
+        delete={deleteBoardHandler}
         open={open}
         setOpen={setOpen}
-        title="Do you want to delete this list?"
+        title="Do you want to delete this Board?"
       />
       <Menu as="div" className="relative inline-block text-left">
         <div>
           <Menu.Button className="inline-flex justify-center w-full rounded-md ">
             <h1 className="font-medium px-2" style={{ zIndex: 1 }}>
-              ...
+              <i className="fas fa-cog"></i>
             </h1>
           </Menu.Button>
         </div>
@@ -87,7 +94,7 @@ export default function Example(props: props) {
                     }
                     onClick={() => setOpenEdit(true)}
                   >
-                    Edit List
+                    Edit Board
                   </button>
                 )}
               </Menu.Item>
@@ -101,7 +108,7 @@ export default function Example(props: props) {
                     }
                     onClick={() => setOpen(true)}
                   >
-                    Delete List
+                    Delete Board
                   </button>
                 )}
               </Menu.Item>

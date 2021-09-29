@@ -2,12 +2,13 @@ import { Fragment, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import DeleteModal from "../components/DeleteModal";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteList, updateList } from "../features/board/boardSlice";
+import { deleteCard, updateCard } from "../features/board/boardSlice";
 import { RootState } from "../app/store";
 import Modal from "../components/Modal";
 
 interface props {
-  id: string;
+  cardId: string;
+  listId: string;
 }
 
 export default function Example(props: props) {
@@ -16,23 +17,24 @@ export default function Example(props: props) {
   const userInfo = useSelector((state: RootState) => state.userInfo);
   const dispatch = useDispatch();
 
-  const deleteListHandler = () => {
+  const deleteCardHandler = () => {
     dispatch(
-      deleteList({
-        listId: props.id,
+      deleteCard({
+        cardId: props.cardId,
         refreshToken: userInfo.refreshToken,
         accessToken: userInfo.accessToken,
+        listId: props.listId,
       })
     );
   };
 
-  const updateListHandler = (title: string) => {
+  const updateCardHandler = (title: string) => {
     dispatch(
-      updateList({
-        listId: props.id,
+      updateCard({
+        cardId: props.cardId,
         refreshToken: userInfo.refreshToken,
         accessToken: userInfo.accessToken,
-        title: title,
+        title,
       })
     );
   };
@@ -42,17 +44,17 @@ export default function Example(props: props) {
       <Modal
         open={openEdit}
         setOpen={setOpenEdit}
-        create={updateListHandler}
-        inputPlaceholder="Enter List Title"
-        title="Edit list title"
+        create={updateCardHandler}
+        inputPlaceholder="Enter Card Title"
+        title="Edit card title"
         btnText="Update"
       />
       <DeleteModal
         id="id"
-        delete={deleteListHandler}
+        delete={deleteCardHandler}
         open={open}
         setOpen={setOpen}
-        title="Do you want to delete this list?"
+        title="Do you want to delete this card?"
       />
       <Menu as="div" className="relative inline-block text-left">
         <div>
@@ -87,7 +89,7 @@ export default function Example(props: props) {
                     }
                     onClick={() => setOpenEdit(true)}
                   >
-                    Edit List
+                    Edit Card
                   </button>
                 )}
               </Menu.Item>
@@ -101,7 +103,7 @@ export default function Example(props: props) {
                     }
                     onClick={() => setOpen(true)}
                   >
-                    Delete List
+                    Delete Card
                   </button>
                 )}
               </Menu.Item>

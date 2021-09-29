@@ -22,7 +22,7 @@ export const getBoard = async (
 };
 
 export const getOneBoard = async (query: FilterQuery<BoardDocument>) => {
-  return Board.findOne(query).populate("lists", "title");
+  return Board.findOne(query);
 };
 
 export const deleteBoardByUser = async (query: FilterQuery<BoardDocument>) => {

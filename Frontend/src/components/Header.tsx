@@ -27,14 +27,17 @@ const Header = () => {
       </label>
 
       <ul className="menu border-b md:border-none flex justify-end list-reset m-0 w-full md:w-auto">
-        <li className="border-t md:border-none">
-          <Link
-            to="/"
-            className="block md:inline-block px-4 py-3 no-underline text-grey-darkest hover:text-grey-darker"
-          >
-            Home
-          </Link>
-        </li>
+        {!userInfo.accessToken && (
+          <li className="border-t md:border-none">
+            <Link
+              to="/"
+              className="block md:inline-block px-4 py-3 no-underline text-grey-darkest hover:text-grey-darker"
+            >
+              Home
+            </Link>
+          </li>
+        )}
+
         {!userInfo.accessToken ? (
           <li className="border-t md:border-none">
             <Link

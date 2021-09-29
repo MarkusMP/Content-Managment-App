@@ -78,7 +78,13 @@ export const createBoard = createAsyncThunk(
 const boardsSlice = createSlice({
   name: "boards",
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    deleteTheBoard: (state, action) => {
+      state.boards = state.boards.filter(
+        (board) => board._id !== action.payload.boardId
+      );
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getAllBoardsByUser.pending, (state, action) => {
       state.status = "Loading";
@@ -91,5 +97,7 @@ const boardsSlice = createSlice({
     });
   },
 });
+
+export const { deleteTheBoard } = boardsSlice.actions;
 
 export default boardsSlice.reducer;

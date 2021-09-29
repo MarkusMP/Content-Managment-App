@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, PopulatedDoc, Document } from "mongoose";
 import { ListDocument } from "../model/list.model";
 
 export interface BoardDocument extends mongoose.Document {
@@ -13,7 +13,7 @@ export interface BoardDocument extends mongoose.Document {
 const BoardSchema = new mongoose.Schema(
   {
     title: { required: true, type: String },
-    backgroundURL: { type: String },
+    backgroundURL: { type: String, default: "" },
     lists: [{ type: Schema.Types.ObjectId, ref: "List" }],
     user: { type: Schema.Types.ObjectId, ref: "User" },
   },

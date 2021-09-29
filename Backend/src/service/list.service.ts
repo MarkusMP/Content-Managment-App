@@ -49,5 +49,5 @@ export const updateList = async (
 };
 
 export const findAllListByBoard = async (query: FilterQuery<ListDocument>) => {
-  return Board.findById(query.boardId).populate("lists", "cards title");
+  return List.find({ board: query.boardId }).populate("cards");
 };

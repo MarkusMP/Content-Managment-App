@@ -59,7 +59,7 @@ const findOneBoardById = async (req: Request, res: Response) => {
 
   console.log(boardId);
 
-  const board = await getOneBoard({ boardId });
+  const board = await getOneBoard({ _id: boardId });
 
   if (!board) {
     return res.status(404);

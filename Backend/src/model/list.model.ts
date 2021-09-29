@@ -3,14 +3,16 @@ import { CardDocument } from "./card.model";
 
 export interface ListDocument extends mongoose.Document {
   title: string;
-  cards: Array<CardDocument>;
   board: Schema.Types.ObjectId;
+
+  cards: Array<CardDocument>;
 }
 
 const listSchema = new mongoose.Schema({
+  board: { type: Schema.Types.ObjectId, ref: "Board" },
+
   title: { type: String, required: true },
   cards: [{ type: Schema.Types.ObjectId, ref: "Card" }],
-  board: { type: Schema.Types.ObjectId, ref: "Board" },
 });
 
 const List = mongoose.model<ListDocument>("List", listSchema);
